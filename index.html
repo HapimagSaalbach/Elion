@@ -1,3 +1,91 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Elion und der verlorene Schneezauber</title>
+
+<style>
+:root{
+  --blue:#2b5f7a;
+  --dark:#1e2f3a;
+  --card:rgba(255,255,255,0.96);
+  --radius:22px;
+  --shadow:0 12px 35px rgba(0,0,0,.25);
+}
+
+*{box-sizing:border-box;}
+
+body{
+  margin:0;
+  font-family:"Segoe UI",system-ui,Arial,sans-serif;
+  color:var(--dark);
+  min-height:100vh;
+  background:linear-gradient(to bottom,#dfefff 0%,#eef6ff 40%,#ffffff 100%);
+}
+
+/* ❄️ Winterlandschaft */
+.landscape{position:fixed;inset:0;z-index:-1;overflow:hidden;}
+.mountains.back{
+  position:absolute;bottom:0;width:120%;height:45%;
+  background:
+    radial-gradient(circle at 15% 100%, #d6e3f0 40%, transparent 41%),
+    radial-gradient(circle at 45% 100%, #cfdfee 45%, transparent 46%),
+    radial-gradient(circle at 75% 100%, #c8d9e8 42%, transparent 43%);
+}
+.mountains.front{
+  position:absolute;bottom:0;width:120%;height:38%;
+  background:
+    radial-gradient(circle at 20% 100%, #b6cada 50%, transparent 51%),
+    radial-gradient(circle at 50% 100%, #aec4d6 55%, transparent 56%),
+    radial-gradient(circle at 80% 100%, #a6bdd1 52%, transparent 53%);
+}
+.forest{
+  position:absolute;bottom:0;width:120%;height:30%;
+  background:repeating-linear-gradient(-60deg,#1f3d2b 0 12px,#244835 12px 24px);
+  clip-path:polygon(0% 100%,0% 40%,5% 50%,10% 35%,15% 55%,20% 40%,25% 60%,30% 45%,35% 65%,40% 50%,45% 70%,50% 55%,55% 75%,60% 60%,65% 80%,70% 65%,75% 85%,80% 70%,85% 90%,90% 75%,95% 95%,100% 80%,100% 100%);
+}
+
+h1,h2{text-align:center;color:var(--blue)}
+
+.wrap{width:min(980px,100%);margin:auto;padding:20px}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px}
+
+button{
+  background:var(--blue);color:white;
+  border:2px solid var(--blue);
+  border-radius:14px;padding:1rem 1.4rem;
+  font-weight:700;cursor:pointer;
+}
+button.secondary{background:white;color:var(--blue)}
+button:disabled{opacity:.4}
+
+input{
+  width:100%;padding:1rem;border-radius:14px;
+  border:2px solid #cfe6f5;font-size:1rem;
+}
+
+.fullOverlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.55);
+  display:flex;align-items:center;justify-content:center;
+  z-index:1000;padding:20px;
+}
+.box{
+  background:white;border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:26px;
+  width:min(900px,100%);max-height:95vh;
+  overflow:auto;text-align:center;
+}
+
+.slot,.letterTile{
+  width:60px;height:60px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.7rem;font-weight:800;
+}
+.slot{border:2px dashed #cfe6f5}
+.letterTile{background:var(--blue);color:white;cursor:grab}
+</style>
+</head>
 <body>
 
 <div class="landscape">
@@ -20,21 +108,27 @@
 <!-- INTRO -->
 <div id="introOverlay" class="fullOverlay" style="display:none">
   <div class="box">
-    <img src="yeti-9264126_1280.png" class="elion-img">
     <h2>Elion und der verlorene Schneezauber</h2>
-    <p>Finde alle Buchstaben und befreie Elion ❄️</p>
+    <p>
+      Wenn der Winter nach Saalbach kommt, wird die Welt leise. Der Schnee legt sich sanft auf die Berge und alles beginnt zu glitzern.
+      In dieser stillen Zeit ist Elion unterwegs.<br><br>
+      Elion ist ein freundliches Schneewesen. Er bringt den Schneezauber in den Ort, lässt Flocken tanzen und schenkt den Bergen ihr winterliches Leuchten.<br><br>
+      Doch eines Tages verirrte sich Elion. Sein Zauber blieb an einem geheimen Ort gefangen.
+      Nur Kinder können helfen, ihn zu befreien.
+    </p>
+
     <audio id="introAudio" src="ElevenLabs_Text_to_Speech_audio (1).mp3"></audio>
-    <button id="readBtn" class="secondary">▶️ Vorlesen</button><br><br>
-    <button id="startBtn" disabled>Start</button>
+    <button id="readBtn" class="secondary">▶️ Geschichte vorlesen</button><br><br>
+    <button id="startBtn" disabled>Abenteuer starten ❄️</button>
   </div>
 </div>
 
-<!-- ELIOn POPUP -->
+<!-- ELIoN POPUP -->
 <div id="elionPopup" class="fullOverlay" style="display:none">
   <div class="box">
-    <img src="yeti-9264126_1280.png" class="elion-img">
     <h2>Super gemacht! ❄️</h2>
-    <p>Du hast den nächsten Buchstaben gefunden.<br>Beeil dich – die Magie wartet!</p>
+    <p>Du hast einen Buchstaben gefunden.<br>
+    Beeil dich, damit wir Elions Magie befreien!</p>
     <button id="popupNext">Weiter</button>
   </div>
 </div>
@@ -54,94 +148,22 @@
   <p id="locBox"></p>
 
   <div id="letterStep" style="display:none">
-    <input id="letterInput" maxlength="1" placeholder="Buchstabe">
+    <input id="letterInput" maxlength="1" placeholder="Buchstabe eingeben">
   </div>
 </section>
 </main>
 
+<!-- PUZZLE -->
 <div id="puzzleOverlay" class="fullOverlay" style="display:none">
   <div class="box">
     <h2>Ordne die Buchstaben</h2>
+    <p>Bringe die Buchstaben in die richtige Reihenfolge.</p>
     <div id="puzzleSlots" style="display:flex;gap:12px;justify-content:center"></div>
     <div id="puzzleLetters" style="display:flex;gap:12px;justify-content:center;margin-top:20px"></div>
   </div>
 </div>
 
-<div id="finalOverlay" class="fullOverlay" style="display:none">
-  <div class="box">
-    <img src="yeti-9264126_1280.png" class="elion-img">
-    <h2>Elion ist befreit! ✨</h2>
-    <p>Sage das Lösungswort an der Rezeption.</p>
-    <button onclick="location.reload()">Nochmal spielen</button>
-  </div>
-</div>
-<body>
-
-<div class="landscape">
-  <div class="mountains back"></div>
-  <div class="mountains front"></div>
-  <div class="forest"></div>
-</div>
-
-<!-- LEVEL -->
-<div id="levelOverlay" class="fullOverlay">
-  <div class="box">
-    <h2>Wähle deine Rätsel-Stufe</h2>
-    <button data-lvl="1">🟢 6–8 Jahre</button>
-    <button data-lvl="2">🟡 9–11 Jahre</button>
-    <button data-lvl="3">🟠 12–13 Jahre</button>
-    <button data-lvl="4">🔴 14–16 Jahre</button>
-  </div>
-</div>
-
-<!-- INTRO -->
-<div id="introOverlay" class="fullOverlay" style="display:none">
-  <div class="box">
-    <h2>Elion und der verlorene Schneezauber</h2>
-    <p>Finde alle Buchstaben und befreie Elion ❄️</p>
-    <audio id="introAudio" src="ElevenLabs_Text_to_Speech_audio (1).mp3"></audio>
-    <button id="readBtn" class="secondary">▶️ Vorlesen</button><br><br>
-    <button id="startBtn" disabled>Abenteuer starten</button>
-  </div>
-</div>
-
-<!-- ELIOn POPUP -->
-<div id="elionPopup" class="fullOverlay" style="display:none">
-  <div class="box">
-    <h2>Super gemacht! ❄️</h2>
-    <p>Du hast den nächsten Buchstaben gefunden.<br>Beeil dich – die Magie wartet!</p>
-    <button id="popupNext">Weiter</button>
-  </div>
-</div>
-
-<main class="wrap">
-<section id="mainCard" class="card" style="display:none">
-  <h1>Elions Winter-Rätsel</h1>
-  <p id="badge"></p>
-  <p id="riddleText"></p>
-
-  <input id="answerInput" placeholder="Deine Antwort">
-  <button id="checkAnswerBtn">Antwort prüfen</button>
-
-  <p id="errBox" style="display:none;color:red">Noch nicht richtig.</p>
-  <p id="okBox" style="display:none;color:green">Richtig!</p>
-
-  <p id="locBox"></p>
-
-  <div id="letterStep" style="display:none">
-    <input id="letterInput" maxlength="1" placeholder="Buchstabe">
-  </div>
-</section>
-</main>
-
-<div id="puzzleOverlay" class="fullOverlay" style="display:none">
-  <div class="box">
-    <h2>Ordne die Buchstaben</h2>
-    <div id="puzzleSlots" style="display:flex;gap:12px;justify-content:center"></div>
-    <div id="puzzleLetters" style="display:flex;gap:12px;justify-content:center;margin-top:20px"></div>
-  </div>
-</div>
-
+<!-- FINALE -->
 <div id="finalOverlay" class="fullOverlay" style="display:none">
   <div class="box">
     <h2>Elion ist befreit! ✨</h2>
@@ -172,8 +194,8 @@ startBtn.onclick=()=>{
   loadStation(1);
 };
 
-const riddles = {
-
+/* FRAGEN – Winter & Schnee | altersgerecht */
+const riddles={
 1:[
  {q:"Was fällt im Winter vom Himmel?",a:["schnee","schneeflocken"]},
  {q:"Wie fühlt sich Schnee an?",a:["kalt","eiskalt"]},
@@ -184,52 +206,48 @@ const riddles = {
  {q:"Was glitzert im Schnee?",a:["eiskristalle"]},
  {q:"Wie nennt man gefrorenes Wasser?",a:["eis"]}
 ],
-
 2:[
- {q:"Warum zieht man im Winter warme Kleidung an?",a:["kälte","schutz","wärme"]},
- {q:"Was entsteht, wenn Schnee schmilzt und wieder friert?",a:["eis","glätte"]},
+ {q:"Warum zieht man im Winter warme Kleidung an?",a:["wärme","schutz"]},
+ {q:"Was entsteht, wenn Schnee schmilzt und friert?",a:["eis","glätte"]},
  {q:"Warum sind Berge im Winter weiß?",a:["schneedecke"]},
  {q:"Was hilft gegen kalte Hände?",a:["handschuhe"]},
- {q:"Warum sieht man im Winter seinen Atem?",a:["kalte luft","dampf"]},
+ {q:"Warum sieht man seinen Atem?",a:["kalte luft","dampf"]},
  {q:"Welche Sportarten macht man im Schnee?",a:["skifahren","rodeln","snowboard"]},
  {q:"Was hört man bei sehr kaltem Schnee?",a:["knirschen"]},
- {q:"Warum ist Winter für Tiere schwierig?",a:["wenig nahrung","kälte"]}
+ {q:"Warum ist Winter für Tiere schwer?",a:["wenig nahrung","kälte"]}
 ],
-
 3:[
- {q:"Warum rutscht man auf Eis leicht aus?",a:["geringe reibung","glatt"]},
- {q:"Warum bleibt Schnee im Schatten länger liegen?",a:["weniger sonne","kälte"]},
- {q:"Warum hält ein dicker Mantel wärmer?",a:["isolation","luft"]},
- {q:"Warum knackt Schnee bei Frost?",a:["kristalle","struktur"]},
- {q:"Warum ist Winterluft oft klar?",a:["weniger feuchtigkeit"]},
- {q:"Warum frieren Pfützen schneller als Seen?",a:["weniger wasser"]},
- {q:"Warum verlieren Bäume im Winter Blätter?",a:["energiesparen"]},
- {q:"Warum hilft Bewegung gegen Frieren?",a:["wärme","durchblutung"]}
+ {q:"Warum rutscht man auf Eis aus?",a:["geringe reibung","glatt"]},
+ {q:"Warum bleibt Schnee im Schatten länger?",a:["weniger sonne"]},
+ {q:"Warum hält ein dicker Mantel warm?",a:["isolation","luft"]},
+ {q:"Warum knackt Schnee bei Frost?",a:["kristalle"]},
+ {q:"Warum ist Winterluft klar?",a:["weniger feuchtigkeit"]},
+ {q:"Warum frieren Pfützen schneller?",a:["weniger wasser"]},
+ {q:"Warum verlieren Bäume Blätter?",a:["energiesparen"]},
+ {q:"Warum hilft Bewegung gegen Kälte?",a:["wärme","durchblutung"]}
 ],
-
 4:[
- {q:"Warum kühlen klare Winternächte stärker aus?",a:["wärmeabstrahlung"]},
- {q:"Warum schmilzt Schnee bei Sonne trotz Minusgraden?",a:["strahlung","energie"]},
- {q:"Warum wirkt Streusalz auf Eis?",a:["gefrierpunkt","senkung"]},
- {q:"Warum isolieren Daunenjacken gut?",a:["luft","isolation"]},
- {q:"Warum sind Lawinen im Frühwinter gefährlich?",a:["instabile schichten"]},
- {q:"Warum braucht der Körper im Winter mehr Energie?",a:["wärme","kalorien"]},
+ {q:"Warum kühlen klare Nächte stärker aus?",a:["wärmeabstrahlung"]},
+ {q:"Warum schmilzt Schnee in der Sonne?",a:["energie","strahlung"]},
+ {q:"Warum wirkt Streusalz?",a:["gefrierpunkt","senkung"]},
+ {q:"Warum isolieren Daunen?",a:["luft","isolation"]},
+ {q:"Warum sind Lawinen gefährlich?",a:["instabile schichten"]},
+ {q:"Warum braucht der Körper mehr Energie?",a:["wärme","kalorien"]},
  {q:"Warum entstehen Eiszapfen?",a:["schmelzen","gefrieren"]},
- {q:"Warum beeinflusst Winter Ökosysteme?",a:["ruhephase","stoffwechsel"]}
+ {q:"Warum beeinflusst Winter Natur?",a:["ruhephase","stoffwechsel"]}
 ]
-
 };
 
 const stations=[
  null,
- {p:"Skikeller",l:"S"},
- {p:"Oberstes Stockwerk",l:"E"},
- {p:"Heizkeller",l:"L"},
- {p:"Honesty Shop",l:"I"},
- {p:"Bücherecke",l:"G"},
- {p:"Außeneingang Skikeller",l:"E"},
- {p:"Außentreppe",l:"N"},
- {p:"Rezeption",l:"E"}
+ {p:"Skikeller",l:"E"},
+ {p:"Oberstes Stockwerk",l:"I"},
+ {p:"Heizkeller",l:"S"},
+ {p:"Honesty Shop",l:"E"},
+ {p:"Bücherecke",l:"N"},
+ {p:"Außeneingang Skikeller",l:"G"},
+ {p:"Außentreppe",l:"E"},
+ {p:"Rezeption",l:"L"}
 ];
 
 function loadStation(n){
