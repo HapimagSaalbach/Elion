@@ -20,8 +20,20 @@
 body{
   margin:0;
   font-family:"Segoe UI",system-ui,Arial,sans-serif;
-  background:linear-gradient(#eef6ff,#ffffff);
   color:var(--dark);
+
+  /* ❄️ Winterlicher Hintergrund */
+  background-image: 
+    linear-gradient(
+      rgba(255,255,255,0.65),
+      rgba(255,255,255,0.75)
+    ),
+    url("winter-hintergrund.jpg");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 h1,h2{color:var(--blue);text-align:center}
@@ -462,3 +474,4 @@ function checkSolved(){
 </script>
 </body>
 </html>
+
