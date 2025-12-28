@@ -1,8 +1,95 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Elion und der verlorene Schneezauber</title>
+
+<style>
+:root{
+  --winter:#2a5f7a;
+  --eis:#d9efff;
+  --text:#1b2f3a;
+  --card:rgba(255,255,255,0.97);
+  --radius:22px;
+  --shadow:0 10px 40px rgba(0,0,0,0.25);
+}
+
+*{box-sizing:border-box;}
+
+body{
+  margin:0;
+  font-family:system-ui, Arial, sans-serif;
+  color:var(--text);
+  background:linear-gradient(#e6f3ff,#ffffff);
+}
+
+.wrap{width:min(980px,100%);margin:auto;padding:18px;}
+.card{background:var(--card);padding:22px;border-radius:var(--radius);box-shadow:var(--shadow);}
+
+h1,h2{text-align:center;color:var(--winter);}
+
+button{
+  cursor:pointer;
+  padding:1rem;
+  border-radius:14px;
+  border:2px solid var(--winter);
+  font-weight:700;
+  background:var(--winter);
+  color:white;
+}
+button.secondary{background:white;color:var(--winter);}
+button:disabled{opacity:.4;}
+
+input{
+  width:100%;
+  padding:1rem;
+  margin-top:.4rem;
+  border:2px solid var(--eis);
+  border-radius:14px;
+}
+
+.fullOverlay{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.55);
+  display:flex;align-items:center;justify-content:center;
+  z-index:1000;padding:20px;
+}
+
+.box{
+  background:white;
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  width:min(900px,100%);
+  max-height:95vh;
+  overflow:auto;
+  padding:24px;
+  text-align:center;
+}
+
+.elion-img{
+  max-width:280px;
+  border-radius:18px;
+  box-shadow:0 8px 25px rgba(0,0,0,.25);
+  margin:0 auto 20px;
+  display:block;
+}
+
+.slot,.letterTile{
+  width:60px;height:60px;
+  border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.7rem;font-weight:800;
+}
+.slot{border:2px dashed var(--eis);}
+.letterTile{background:var(--winter);color:white;cursor:grab;}
+</style>
+</head>
 <body>
 
-<!-- LEVEL AUSWAHL -->
+<!-- LEVEL AUSWAHL (NUR EINMAL!) -->
 <div id="levelOverlay" class="fullOverlay">
-  <div class="box" style="padding:24px;text-align:center">
+  <div class="box">
     <h2>Wähle deine Rätsel-Stufe</h2>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
       <button data-lvl="1">🟢 6–8 Jahre</button>
@@ -15,14 +102,13 @@
 
 <!-- INTRO -->
 <div id="introOverlay" class="fullOverlay" style="display:none">
-  <div class="box" style="padding:24px;text-align:center">
+  <div class="box">
 
-    <!-- REALISTISCHES ELION-BILD -->
-    <img src="yeti-9264126_1280.jpg" alt="Elion – das Schneewesen" class="elion-img">
+    <img src="yeti-9264126_1280.png" alt="Elion" class="elion-img">
 
     <h2>Elion und der verlorene Schneezauber</h2>
 
-    <p id="storyText">
+    <p id="storyText" style="white-space:pre-line;text-align:left">
 Wenn der Winter nach Saalbach kommt, wird die Welt leise.
 Der Schnee legt sich sanft auf die Berge und alles beginnt zu glitzern.
 In dieser stillen Zeit ist Elion unterwegs.
@@ -51,7 +137,6 @@ sammle die Buchstaben
 und bring den Schneezauber zurück nach Saalbach.
     </p>
 
-    <!-- AUDIO -->
     <audio id="introAudio" src="ElevenLabs_Text_to_Speech_audio (1).mp3"></audio>
 
     <button id="readBtn" class="secondary">▶️ Vorlesen</button><br><br>
@@ -62,8 +147,10 @@ und bring den Schneezauber zurück nach Saalbach.
 <!-- SPIEL -->
 <main class="wrap">
 <section class="card" id="mainCard" style="display:none">
+
   <h1>Elions Winter-Rätseltour</h1>
-  <p id="badge"></p>
+  <p id="badge" style="text-align:center;font-weight:700"></p>
+
   <p id="riddleText"></p>
 
   <label>Deine Antwort</label>
@@ -71,21 +158,22 @@ und bring den Schneezauber zurück nach Saalbach.
 
   <button id="checkAnswerBtn">Antwort prüfen</button>
 
-  <div id="errBox" style="display:none;color:#c62828;font-weight:700">Leider falsch.</div>
-  <div id="okBox" style="display:none;color:#2e7d32;font-weight:700">Richtig!</div>
+  <p id="errBox" style="display:none;color:#c62828;font-weight:700">Leider falsch.</p>
+  <p id="okBox" style="display:none;color:#2e7d32;font-weight:700">Richtig!</p>
 
-  <div id="locBox" style="display:none;font-weight:700"></div>
+  <p id="locBox" style="display:none;font-weight:700"></p>
 
   <div id="letterStep" style="display:none">
     <label>Buchstabe vom Ort</label>
     <input id="letterInput" maxlength="1">
   </div>
+
 </section>
 </main>
 
 <!-- PUZZLE -->
 <div id="puzzleOverlay" class="fullOverlay" style="display:none">
-  <div class="box" style="padding:24px;text-align:center">
+  <div class="box">
     <h2>Buchstaben sortieren</h2>
     <div id="puzzleSlots" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap"></div>
     <div id="puzzleLetters" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px"></div>
@@ -94,111 +182,9 @@ und bring den Schneezauber zurück nach Saalbach.
 
 <!-- FINALE -->
 <div id="finalOverlay" class="fullOverlay" style="display:none">
-  <div class="box" style="padding:24px;text-align:center">
+  <div class="box">
     <h2>Der Schneezauber ist zurück ❄️✨</h2>
-    <p>Elion ist befreit. Sage das Lösungswort an der Rezeption.</p>
-    <button onclick="location.reload()">Nochmal spielen</button>
-  </div>
-</div>
-<body>
-
-<!-- LEVEL AUSWAHL -->
-<div id="levelOverlay" class="fullOverlay">
-  <div class="box" style="padding:24px;text-align:center">
-    <h2>Wähle deine Rätsel-Stufe</h2>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-      <button data-lvl="1">🟢 6–8 Jahre</button>
-      <button data-lvl="2">🟡 9–11 Jahre</button>
-      <button data-lvl="3">🟠 12–13 Jahre</button>
-      <button data-lvl="4">🔴 14–16 Jahre</button>
-    </div>
-  </div>
-</div>
-
-<!-- INTRO -->
-<div id="introOverlay" class="fullOverlay" style="display:none">
-  <div class="box" style="padding:24px;text-align:center">
-
-    <!-- REALISTISCHES ELION-BILD -->
-    <img src="yeti-9264126_1280.jpg" alt="Elion – das Schneewesen" class="elion-img">
-
-    <h2>Elion und der verlorene Schneezauber</h2>
-
-    <p id="storyText">
-Wenn der Winter nach Saalbach kommt, wird die Welt leise.
-Der Schnee legt sich sanft auf die Berge und alles beginnt zu glitzern.
-In dieser stillen Zeit ist Elion unterwegs.
-
-Elion ist ein freundliches Schneewesen.
-Er bringt den Schneezauber in den Ort,
-lässt Flocken tanzen und schenkt den Bergen ihr winterliches Leuchten.
-
-Doch eines Tages verirrte sich Elion.
-Er fand den Weg nicht mehr zurück
-und sein Zauber blieb an einem geheimen Ort gefangen.
-Seitdem wirkt der Winter ein wenig stiller,
-als würde etwas fehlen.
-
-Die Berge wussten: Nur Kinder können helfen.
-Darum versteckten sie ein Winterwort mit acht Buchstaben.
-Jeder Buchstabe wartet an einem besonderen Ort
-und wird von einem kleinen Rätsel beschützt.
-
-Wenn alle Buchstaben gefunden sind,
-kann Elion befreit werden.
-
-Vielleicht bist du hier, um ihm zu helfen.
-Folge den Rätseln,
-sammle die Buchstaben
-und bring den Schneezauber zurück nach Saalbach.
-    </p>
-
-    <!-- AUDIO -->
-    <audio id="introAudio" src="ElevenLabs_Text_to_Speech_audio (1).mp3"></audio>
-
-    <button id="readBtn" class="secondary">▶️ Vorlesen</button><br><br>
-    <button id="startBtn" disabled>Abenteuer starten ❄️</button>
-  </div>
-</div>
-
-<!-- SPIEL -->
-<main class="wrap">
-<section class="card" id="mainCard" style="display:none">
-  <h1>Elions Winter-Rätseltour</h1>
-  <p id="badge"></p>
-  <p id="riddleText"></p>
-
-  <label>Deine Antwort</label>
-  <input id="answerInput">
-
-  <button id="checkAnswerBtn">Antwort prüfen</button>
-
-  <div id="errBox" style="display:none;color:#c62828;font-weight:700">Leider falsch.</div>
-  <div id="okBox" style="display:none;color:#2e7d32;font-weight:700">Richtig!</div>
-
-  <div id="locBox" style="display:none;font-weight:700"></div>
-
-  <div id="letterStep" style="display:none">
-    <label>Buchstabe vom Ort</label>
-    <input id="letterInput" maxlength="1">
-  </div>
-</section>
-</main>
-
-<!-- PUZZLE -->
-<div id="puzzleOverlay" class="fullOverlay" style="display:none">
-  <div class="box" style="padding:24px;text-align:center">
-    <h2>Buchstaben sortieren</h2>
-    <div id="puzzleSlots" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap"></div>
-    <div id="puzzleLetters" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px"></div>
-  </div>
-</div>
-
-<!-- FINALE -->
-<div id="finalOverlay" class="fullOverlay" style="display:none">
-  <div class="box" style="padding:24px;text-align:center">
-    <h2>Der Schneezauber ist zurück ❄️✨</h2>
-    <p>Elion ist befreit. Sage das Lösungswort an der Rezeption.</p>
+    <p>Elion ist befreit – sage das Lösungswort an der Rezeption.</p>
     <button onclick="location.reload()">Nochmal spielen</button>
   </div>
 </div>
@@ -216,7 +202,7 @@ document.querySelectorAll("#levelOverlay button").forEach(btn=>{
   };
 });
 
-/* AUDIO VORLESEN */
+/* AUDIO */
 readBtn.onclick=()=>{
   introAudio.currentTime=0;
   introAudio.play();
@@ -230,37 +216,37 @@ startBtn.onclick=()=>{
   loadStation(1);
 };
 
-/* ALTERSGERECHTE, OFFENE FRAGEN */
+/* FRAGEN – altersgerecht & offen */
 const riddles={
 1:[
  {q:"Wo bewahrt man Ski und Snowboards auf?",a:["skikeller"]},
- {q:"Wie nennt man das höchste Stockwerk eines Hauses?",a:["oberstes stockwerk","dachgeschoss"]},
- {q:"Wodurch wird das Haus im Winter warm?",a:["heizung"]},
+ {q:"Wie nennt man das höchste Stockwerk?",a:["oberstes stockwerk"]},
+ {q:"Wodurch wird das Haus warm?",a:["heizung"]},
  {q:"Wie heißt der kleine Laden ohne Kasse?",a:["honesty shop"]},
  {q:"Was findet man in der Bücherecke?",a:["bücher","buch"]},
  {q:"Wohin führt dieser Eingang?",a:["nach draußen","außen"]},
  {q:"In welche Richtung führt diese Treppe?",a:["nach unten"]},
- {q:"Wo bekommt man Hilfe und Informationen?",a:["rezeption"]}
+ {q:"Wo bekommt man Hilfe?",a:["rezeption"]}
 ],
 2:[
- {q:"Welche Wintersportgeräte stehen im Skikeller?",a:["ski","snowboard"]},
- {q:"Was hat man vom obersten Stockwerk aus?",a:["aussicht","blick"]},
+ {q:"Welche Wintersportgeräte lagert man im Skikeller?",a:["ski","snowboard"]},
+ {q:"Was hat man vom obersten Stockwerk?",a:["aussicht","blick"]},
  {q:"Welche Aufgabe hat die Heizung?",a:["wärme","heizen"]},
  {q:"Warum funktioniert ein Honesty Shop?",a:["vertrauen","ehrlichkeit"]},
  {q:"Warum lesen Menschen Bücher?",a:["wissen","geschichten"]},
- {q:"Warum zieht man Skischuhe beim Außeneingang an?",a:["schnee","nass"]},
+ {q:"Warum zieht man Skischuhe draußen an?",a:["schnee"]},
  {q:"Warum ist eine vereiste Treppe gefährlich?",a:["rutschgefahr","sturz"]},
  {q:"Welche Aufgaben hat die Rezeption?",a:["hilfe","organisation"]}
 ],
 3:[
  {q:"Warum lagert man Sportgeräte trocken?",a:["schutz","rost"]},
- {q:"Warum ist es oben oft ruhiger?",a:["weniger verkehr","ruhe"]},
+ {q:"Warum ist es oben ruhiger?",a:["ruhe"]},
  {q:"Wie funktioniert eine Heizungsanlage?",a:["wärmeübertragung"]},
  {q:"Warum braucht ein Honesty Shop Ehrlichkeit?",a:["vertrauen"]},
  {q:"Welche Wirkung hat Lesen?",a:["entspannung","wissen"]},
  {q:"Warum trennt man Innen- und Außenzugänge?",a:["sauberkeit"]},
  {q:"Welche Gefahr besteht bei Eis?",a:["sturz","rutschen"]},
- {q:"Warum ist die Rezeption wichtig?",a:["koordination","organisation"]}
+ {q:"Warum ist die Rezeption wichtig?",a:["organisation","koordination"]}
 ],
 4:[
  {q:"Warum ist kontrollierte Lagerung wichtig?",a:["materialschutz"]},
@@ -274,7 +260,7 @@ const riddles={
 ]
 };
 
-/* ORTE + BUCHSTABEN (durcheinander) */
+/* ORTE + BUCHSTABEN (durcheinander → EISENGEL) */
 const stations=[
  null,
  {place:"Skikeller",letter:"S"},
@@ -289,7 +275,7 @@ const stations=[
 
 function normalize(s){
  return s.toLowerCase().trim()
-   .replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue");
+  .replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue");
 }
 
 function loadStation(n){
