@@ -1,277 +1,157 @@
-<style>
-:root{
-  --ice:#e8f4ff;
-  --blue:#2b5f7a;
-  --dark:#1e2f3a;
-  --card:rgba(255,255,255,0.96);
-  --radius:22px;
-  --shadow:0 12px 35px rgba(0,0,0,.22);
-}
-
-*{box-sizing:border-box;}
-
-body{
-  margin:0;
-  font-family:"Segoe UI",system-ui,Arial,sans-serif;
-  color:var(--dark);
-  min-height:100vh;
-  overflow-x:hidden;
-
-  /* ❄️ Winterhimmel */
-  background:
-    linear-gradient(
-      to bottom,
-      #dfefff 0%,
-      #eef6ff 35%,
-      #f9fcff 60%,
-      #ffffff 100%
-    );
-}
-
-/* ===============================
-   ❄️ CSS-WINTERLANDSCHAFT
-=============================== */
-
-.landscape{
-  position:fixed;
-  inset:0;
-  z-index:-1;
-  overflow:hidden;
-}
-
-/* 🏔 Hintere Berge */
-.mountains.back{
-  position:absolute;
-  bottom:0;
-  width:120%;
-  height:45%;
-  background:
-    radial-gradient(circle at 15% 100%, #d6e3f0 40%, transparent 41%),
-    radial-gradient(circle at 45% 100%, #cfdfee 45%, transparent 46%),
-    radial-gradient(circle at 75% 100%, #c8d9e8 42%, transparent 43%);
-  opacity:.9;
-  transform:translateX(-10%);
-}
-
-/* 🏔 Vordere Berge */
-.mountains.front{
-  position:absolute;
-  bottom:0;
-  width:120%;
-  height:38%;
-  background:
-    radial-gradient(circle at 20% 100%, #b6cada 50%, transparent 51%),
-    radial-gradient(circle at 50% 100%, #aec4d6 55%, transparent 56%),
-    radial-gradient(circle at 80% 100%, #a6bdd1 52%, transparent 53%);
-  transform:translateX(-5%);
-}
-
-/* 🌲 Wald */
-.forest{
-  position:absolute;
-  bottom:0;
-  width:120%;
-  height:30%;
-  background:
-    repeating-linear-gradient(
-      -60deg,
-      #1f3d2b 0 12px,
-      #244835 12px 24px
-    );
-  clip-path: polygon(
-    0% 100%, 0% 40%, 5% 50%, 10% 35%, 15% 55%, 20% 40%,
-    25% 60%, 30% 45%, 35% 65%, 40% 50%, 45% 70%, 50% 55%,
-    55% 75%, 60% 60%, 65% 80%, 70% 65%, 75% 85%, 80% 70%,
-    85% 90%, 90% 75%, 95% 95%, 100% 80%, 100% 100%
-  );
-}
-
-/* ===============================
-   UI ELEMENTE
-=============================== */
-
-h1,h2{
-  color:var(--blue);
-  text-align:center;
-}
-
-.wrap{
-  width:min(980px,100%);
-  margin:auto;
-  padding:20px;
-}
-
-.card{
-  background:var(--card);
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-  padding:24px;
-  backdrop-filter:blur(2px);
-}
-
-button{
-  background:var(--blue);
-  color:white;
-  border:2px solid var(--blue);
-  border-radius:14px;
-  padding:1rem 1.4rem;
-  font-size:1rem;
-  font-weight:700;
-  cursor:pointer;
-}
-
-button.secondary{
-  background:white;
-  color:var(--blue);
-}
-
-button:disabled{
-  opacity:.4;
-  cursor:not-allowed;
-}
-
-input{
-  width:100%;
-  padding:1rem;
-  border-radius:14px;
-  border:2px solid #cfe6f5;
-  font-size:1rem;
-}
-
-.fullOverlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.55);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:1000;
-  padding:20px;
-}
-
-.box{
-  background:white;
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-  padding:26px;
-  width:min(900px,100%);
-  max-height:95vh;
-  overflow:auto;
-  text-align:center;
-}
-
-.elion-img{
-  max-width:260px;
-  border-radius:18px;
-  box-shadow:0 10px 28px rgba(0,0,0,.25);
-  margin-bottom:18px;
-}
-</style>
-</head>
 <body>
+
+<div class="landscape">
+  <div class="mountains back"></div>
+  <div class="mountains front"></div>
+  <div class="forest"></div>
+</div>
 
 <!-- LEVEL -->
 <div id="levelOverlay" class="fullOverlay">
-  <div class="box fadeIn">
+  <div class="box">
     <h2>Wähle deine Rätsel-Stufe</h2>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-      <button data-lvl="1">🟢 6–8 Jahre</button>
-      <button data-lvl="2">🟡 9–11 Jahre</button>
-      <button data-lvl="3">🟠 12–13 Jahre</button>
-      <button data-lvl="4">🔴 14–16 Jahre</button>
-    </div>
+    <button data-lvl="1">🟢 6–8 Jahre</button>
+    <button data-lvl="2">🟡 9–11 Jahre</button>
+    <button data-lvl="3">🟠 12–13 Jahre</button>
+    <button data-lvl="4">🔴 14–16 Jahre</button>
   </div>
 </div>
 
 <!-- INTRO -->
 <div id="introOverlay" class="fullOverlay" style="display:none">
-  <div class="box fadeIn">
+  <div class="box">
     <img src="yeti-9264126_1280.png" class="elion-img">
     <h2>Elion und der verlorene Schneezauber</h2>
-
-    <p style="white-space:pre-line;text-align:left">
-Wenn der Winter nach Saalbach kommt, wird die Welt leise.
-Der Schnee legt sich sanft auf die Berge und alles beginnt zu glitzern.
-
-Elion ist ein freundliches Schneewesen.
-Er bringt den Schneezauber in den Ort
-und schenkt den Bergen ihr winterliches Leuchten.
-
-Doch eines Tages verirrte sich Elion.
-Sein Zauber blieb an einem geheimen Ort gefangen.
-
-Nur Kinder können helfen.
-Acht Buchstaben sind versteckt – bewacht von Rätseln.
-Wenn du sie findest, wird Elion befreit.
-    </p>
-
+    <p>Finde alle Buchstaben und befreie Elion ❄️</p>
     <audio id="introAudio" src="ElevenLabs_Text_to_Speech_audio (1).mp3"></audio>
     <button id="readBtn" class="secondary">▶️ Vorlesen</button><br><br>
-    <button id="startBtn" disabled>Abenteuer starten ❄️</button>
+    <button id="startBtn" disabled>Start</button>
   </div>
 </div>
 
 <!-- ELIOn POPUP -->
 <div id="elionPopup" class="fullOverlay" style="display:none">
-  <div class="box fadeIn">
+  <div class="box">
     <img src="yeti-9264126_1280.png" class="elion-img">
     <h2>Super gemacht! ❄️</h2>
-    <p>
-      Du hast den nächsten Buchstaben gefunden!<br><br>
-      Beeil dich weiter – nur gemeinsam können wir<br>
-      die Magie befreien und den Schneezauber retten!
-    </p>
-    <button id="popupNext">Weiter ➜</button>
+    <p>Du hast den nächsten Buchstaben gefunden.<br>Beeil dich – die Magie wartet!</p>
+    <button id="popupNext">Weiter</button>
   </div>
 </div>
 
-<!-- SPIEL -->
 <main class="wrap">
 <section id="mainCard" class="card" style="display:none">
-  <h1>Elions Winter-Rätseltour</h1>
-  <p id="badge" style="font-weight:700;text-align:center"></p>
-
+  <h1>Elions Winter-Rätsel</h1>
+  <p id="badge"></p>
   <p id="riddleText"></p>
 
-  <label>Deine Antwort</label>
-  <input id="answerInput">
+  <input id="answerInput" placeholder="Deine Antwort">
+  <button id="checkAnswerBtn">Antwort prüfen</button>
 
-  <button id="checkAnswerBtn" style="margin-top:1rem">Antwort prüfen</button>
+  <p id="errBox" style="display:none;color:red">Noch nicht richtig.</p>
+  <p id="okBox" style="display:none;color:green">Richtig!</p>
 
-  <p id="errBox" style="display:none;color:#c62828;font-weight:700">Das war noch nicht richtig.</p>
-  <p id="okBox" style="display:none;color:#2e7d32;font-weight:700">Richtig!</p>
-
-  <p id="locBox" style="display:none;font-weight:700"></p>
+  <p id="locBox"></p>
 
   <div id="letterStep" style="display:none">
-    <label>Buchstabe vom Ort</label>
-    <input id="letterInput" maxlength="1">
+    <input id="letterInput" maxlength="1" placeholder="Buchstabe">
   </div>
 </section>
 </main>
 
-<!-- PUZZLE -->
 <div id="puzzleOverlay" class="fullOverlay" style="display:none">
-  <div class="box fadeIn">
+  <div class="box">
     <h2>Ordne die Buchstaben</h2>
-    <div id="puzzleSlots" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap"></div>
-    <div id="puzzleLetters" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px"></div>
+    <div id="puzzleSlots" style="display:flex;gap:12px;justify-content:center"></div>
+    <div id="puzzleLetters" style="display:flex;gap:12px;justify-content:center;margin-top:20px"></div>
   </div>
 </div>
 
-<!-- FINAL -->
 <div id="finalOverlay" class="fullOverlay" style="display:none">
-  <div class="box fadeIn">
+  <div class="box">
     <img src="yeti-9264126_1280.png" class="elion-img">
-    <h2>Der Schneezauber lebt! ✨❄️</h2>
-    <p>Du hast Elion befreit.<br>Sage das Lösungswort an der Rezeption.</p>
+    <h2>Elion ist befreit! ✨</h2>
+    <p>Sage das Lösungswort an der Rezeption.</p>
+    <button onclick="location.reload()">Nochmal spielen</button>
+  </div>
+</div>
+<body>
+
+<div class="landscape">
+  <div class="mountains back"></div>
+  <div class="mountains front"></div>
+  <div class="forest"></div>
+</div>
+
+<!-- LEVEL -->
+<div id="levelOverlay" class="fullOverlay">
+  <div class="box">
+    <h2>Wähle deine Rätsel-Stufe</h2>
+    <button data-lvl="1">🟢 6–8 Jahre</button>
+    <button data-lvl="2">🟡 9–11 Jahre</button>
+    <button data-lvl="3">🟠 12–13 Jahre</button>
+    <button data-lvl="4">🔴 14–16 Jahre</button>
+  </div>
+</div>
+
+<!-- INTRO -->
+<div id="introOverlay" class="fullOverlay" style="display:none">
+  <div class="box">
+    <h2>Elion und der verlorene Schneezauber</h2>
+    <p>Finde alle Buchstaben und befreie Elion ❄️</p>
+    <audio id="introAudio" src="ElevenLabs_Text_to_Speech_audio (1).mp3"></audio>
+    <button id="readBtn" class="secondary">▶️ Vorlesen</button><br><br>
+    <button id="startBtn" disabled>Abenteuer starten</button>
+  </div>
+</div>
+
+<!-- ELIOn POPUP -->
+<div id="elionPopup" class="fullOverlay" style="display:none">
+  <div class="box">
+    <h2>Super gemacht! ❄️</h2>
+    <p>Du hast den nächsten Buchstaben gefunden.<br>Beeil dich – die Magie wartet!</p>
+    <button id="popupNext">Weiter</button>
+  </div>
+</div>
+
+<main class="wrap">
+<section id="mainCard" class="card" style="display:none">
+  <h1>Elions Winter-Rätsel</h1>
+  <p id="badge"></p>
+  <p id="riddleText"></p>
+
+  <input id="answerInput" placeholder="Deine Antwort">
+  <button id="checkAnswerBtn">Antwort prüfen</button>
+
+  <p id="errBox" style="display:none;color:red">Noch nicht richtig.</p>
+  <p id="okBox" style="display:none;color:green">Richtig!</p>
+
+  <p id="locBox"></p>
+
+  <div id="letterStep" style="display:none">
+    <input id="letterInput" maxlength="1" placeholder="Buchstabe">
+  </div>
+</section>
+</main>
+
+<div id="puzzleOverlay" class="fullOverlay" style="display:none">
+  <div class="box">
+    <h2>Ordne die Buchstaben</h2>
+    <div id="puzzleSlots" style="display:flex;gap:12px;justify-content:center"></div>
+    <div id="puzzleLetters" style="display:flex;gap:12px;justify-content:center;margin-top:20px"></div>
+  </div>
+</div>
+
+<div id="finalOverlay" class="fullOverlay" style="display:none">
+  <div class="box">
+    <h2>Elion ist befreit! ✨</h2>
+    <p>Sage das Lösungswort an der Rezeption.</p>
     <button onclick="location.reload()">Nochmal spielen</button>
   </div>
 </div>
 <script>
 let level=1,station=1,collected=[];
 
-/* LEVEL */
 document.querySelectorAll("#levelOverlay button").forEach(b=>{
   b.onclick=()=>{
     level=+b.dataset.lvl;
@@ -280,161 +160,62 @@ document.querySelectorAll("#levelOverlay button").forEach(b=>{
   };
 });
 
-/* AUDIO */
 readBtn.onclick=()=>{
   introAudio.currentTime=0;
   introAudio.play();
   introAudio.onended=()=>startBtn.disabled=false;
 };
 
-/* START */
 startBtn.onclick=()=>{
   introOverlay.style.display="none";
   mainCard.style.display="block";
   loadStation(1);
 };
 
-/* FRAGEN – Winter & Schnee | altersgerecht | 2–3 Antworten je Frage */
 const riddles = {
 
-1: [ // 🟢 6–8 Jahre – Wahrnehmen & Erleben
-  {
-    q: "Was fällt im Winter leise vom Himmel?",
-    a: ["schneeflocken", "weißer schnee", "schnee"]
-  },
-  {
-    q: "Wie fühlt sich Schnee in der Hand an?",
-    a: ["kalt", "eiskalt"]
-  },
-  {
-    q: "Welche Figur bauen Kinder gern im Winter draußen?",
-    a: ["schneemann", "schneefigur"]
-  },
-  {
-    q: "Welche Farbe hat frisch gefallener Schnee?",
-    a: ["schneeweiß", "weiß"]
-  },
-  {
-    q: "Was setzt man sich im Winter auf den Kopf?",
-    a: ["mütze", "strickhaube"]
-  },
-  {
-    q: "Was hinterlassen Schuhe im frischen Schnee?",
-    a: ["fußabdrücke", "trittspuren"]
-  },
-  {
-    q: "Was funkelt im Schnee, wenn die Sonne scheint?",
-    a: ["eiskristalle", "glitzerpartikel"]
-  },
-  {
-    q: "Wie nennt man Wasser, das ganz hart geworden ist?",
-    a: ["eisblock", "eis"]
-  }
+1:[
+ {q:"Was fällt im Winter vom Himmel?",a:["schnee","schneeflocken"]},
+ {q:"Wie fühlt sich Schnee an?",a:["kalt","eiskalt"]},
+ {q:"Welche Figur baut man aus Schnee?",a:["schneemann"]},
+ {q:"Welche Farbe hat Schnee?",a:["weiß"]},
+ {q:"Was trägt man im Winter auf dem Kopf?",a:["mütze"]},
+ {q:"Was hinterlassen Schuhe im Schnee?",a:["spuren","fußabdrücke"]},
+ {q:"Was glitzert im Schnee?",a:["eiskristalle"]},
+ {q:"Wie nennt man gefrorenes Wasser?",a:["eis"]}
 ],
 
-2: [ // 🟡 9–11 Jahre – Verstehen & Beschreiben
-  {
-    q: "Warum tragen Menschen im Winter dicke Kleidung?",
-    a: ["wärmeschutz", "kälteschutz"]
-  },
-  {
-    q: "Was entsteht auf Wegen, wenn Schnee antaut und wieder friert?",
-    a: ["eisglätte", "rutschfläche", "eis"]
-  },
-  {
-    q: "Warum sind Berge im Winter oft komplett weiß?",
-    a: ["schneedecke", "anhaltender schneefall"]
-  },
-  {
-    q: "Was hilft, kalte Hände schnell wieder warm zu bekommen?",
-    a: ["handschuhe", "taschenwärmer"]
-  },
-  {
-    q: "Warum sieht man im Winter manchmal seinen Atem?",
-    a: ["kondensierte luft", "feuchte atemluft", "warme luft"]
-  },
-  {
-    q: "Welche Wintersportarten macht man auf Schnee?",
-    a: ["skifahren", "rodeln", "snowboarden"]
-  },
-  {
-    q: "Was hört man oft, wenn man über sehr kalten Schnee geht?",
-    a: ["knirschgeräusch", "knacklaute", "knirschen"]
-  },
-  {
-    q: "Warum ist der Winter für viele Tiere schwierig?",
-    a: ["knappes futter", "wenig nahrung"]
-  }
+2:[
+ {q:"Warum zieht man im Winter warme Kleidung an?",a:["kälte","schutz","wärme"]},
+ {q:"Was entsteht, wenn Schnee schmilzt und wieder friert?",a:["eis","glätte"]},
+ {q:"Warum sind Berge im Winter weiß?",a:["schneedecke"]},
+ {q:"Was hilft gegen kalte Hände?",a:["handschuhe"]},
+ {q:"Warum sieht man im Winter seinen Atem?",a:["kalte luft","dampf"]},
+ {q:"Welche Sportarten macht man im Schnee?",a:["skifahren","rodeln","snowboard"]},
+ {q:"Was hört man bei sehr kaltem Schnee?",a:["knirschen"]},
+ {q:"Warum ist Winter für Tiere schwierig?",a:["wenig nahrung","kälte"]}
 ],
 
-3: [ // 🟠 12–13 Jahre – Zusammenhänge & Natur
-  {
-    q: "Warum rutschen Menschen auf vereisten Wegen leicht aus?",
-    a: ["geringe bodenhaftung", "glatte oberfläche"]
-  },
-  {
-    q: "Warum bleibt Schnee im Schatten länger liegen?",
-    a: ["fehlende sonneneinstrahlung", "geringe erwärmung"]
-  },
-  {
-    q: "Warum schützt ein dicker Mantel besser vor Kälte?",
-    a: ["starke wärmeisolierung", "luftpolster im stoff"]
-  },
-  {
-    q: "Warum knackt Schnee bei sehr tiefen Temperaturen?",
-    a: ["starre kristallstruktur", "gefrorene schneekörner"]
-  },
-  {
-    q: "Warum ist die Luft im Winter oft besonders klar?",
-    a: ["niedrige luftfeuchte", "weniger schwebstoffe"]
-  },
-  {
-    q: "Warum gefrieren kleine Pfützen schneller als große Seen?",
-    a: ["geringes wasservolumen", "schneller wärmeverlust"]
-  },
-  {
-    q: "Warum verlieren viele Bäume im Winter ihre Blätter?",
-    a: ["reduzierter energieverbrauch", "schutz vor frostschäden"]
-  },
-  {
-    q: "Warum hält Bewegung den Körper im Winter warm?",
-    a: ["aktivierte muskeln", "erzeugte körperwärme"]
-  }
+3:[
+ {q:"Warum rutscht man auf Eis leicht aus?",a:["geringe reibung","glatt"]},
+ {q:"Warum bleibt Schnee im Schatten länger liegen?",a:["weniger sonne","kälte"]},
+ {q:"Warum hält ein dicker Mantel wärmer?",a:["isolation","luft"]},
+ {q:"Warum knackt Schnee bei Frost?",a:["kristalle","struktur"]},
+ {q:"Warum ist Winterluft oft klar?",a:["weniger feuchtigkeit"]},
+ {q:"Warum frieren Pfützen schneller als Seen?",a:["weniger wasser"]},
+ {q:"Warum verlieren Bäume im Winter Blätter?",a:["energiesparen"]},
+ {q:"Warum hilft Bewegung gegen Frieren?",a:["wärme","durchblutung"]}
 ],
 
-4: [ // 🔴 14–16 Jahre – Physik, Umwelt, Denken
-  {
-    q: "Warum kühlen klare Winternächte stärker aus als bewölkte?",
-    a: ["ungehinderte wärmeabstrahlung", "fehlende wolkenisolierung"]
-  },
-  {
-    q: "Warum schmilzt Schnee auch bei Minusgraden in der Sonne?",
-    a: ["aufgenommene strahlungsenergie", "lokale oberflächenerwärmung"]
-  },
-  {
-    q: "Warum wirkt Streusalz auf vereisten Straßen?",
-    a: ["erniedrigter gefrierpunkt", "veränderte kristallbildung"]
-  },
-  {
-    q: "Warum isolieren Daunenjacken besonders gut?",
-    a: ["eingeschlossene luftschichten", "geringe wärmeleitung"]
-  },
-  {
-    q: "Warum sind Lawinen im Frühwinter besonders gefährlich?",
-    a: ["instabile schneepakete", "fehlende schneeverbindung"]
-  },
-  {
-    q: "Warum benötigt der menschliche Körper im Winter mehr Energie?",
-    a: ["erhöhter wärmebedarf", "zusätzliche wärmeerzeugung"]
-  },
-  {
-    q: "Warum entstehen Eiszapfen an Dachkanten?",
-    a: ["wechsel von schmelzen und gefrieren", "abfließendes tauwasser"]
-  },
-  {
-    q: "Warum beeinflusst der Winter ganze Ökosysteme?",
-    a: ["verlangsamte stoffwechselprozesse", "reduzierte aktivität"]
-  }
+4:[
+ {q:"Warum kühlen klare Winternächte stärker aus?",a:["wärmeabstrahlung"]},
+ {q:"Warum schmilzt Schnee bei Sonne trotz Minusgraden?",a:["strahlung","energie"]},
+ {q:"Warum wirkt Streusalz auf Eis?",a:["gefrierpunkt","senkung"]},
+ {q:"Warum isolieren Daunenjacken gut?",a:["luft","isolation"]},
+ {q:"Warum sind Lawinen im Frühwinter gefährlich?",a:["instabile schichten"]},
+ {q:"Warum braucht der Körper im Winter mehr Energie?",a:["wärme","kalorien"]},
+ {q:"Warum entstehen Eiszapfen?",a:["schmelzen","gefrieren"]},
+ {q:"Warum beeinflusst Winter Ökosysteme?",a:["ruhephase","stoffwechsel"]}
 ]
 
 };
@@ -447,11 +228,9 @@ const stations=[
  {p:"Honesty Shop",l:"I"},
  {p:"Bücherecke",l:"G"},
  {p:"Außeneingang Skikeller",l:"E"},
- {p:"Außentreppe nach unten",l:"N"},
+ {p:"Außentreppe",l:"N"},
  {p:"Rezeption",l:"E"}
 ];
-
-function norm(s){return s.toLowerCase().trim();}
 
 function loadStation(n){
  if(n>8){startPuzzle();return;}
@@ -460,22 +239,22 @@ function loadStation(n){
  riddleText.textContent=riddles[level][n-1].q;
  answerInput.value="";
  letterInput.value="";
- errBox.style.display=okBox.style.display=locBox.style.display=letterStep.style.display="none";
+ errBox.style.display=okBox.style.display="none";
+ letterStep.style.display="none";
 }
 
 checkAnswerBtn.onclick=()=>{
- if(riddles[level][station-1].a.some(a=>norm(answerInput.value).includes(norm(a)))){
-   okBox.style.display="block";
-   locBox.textContent="📍 Ort: "+stations[station].p;
-   locBox.style.display="block";
-   letterStep.style.display="block";
+ if(riddles[level][station-1].a.some(a=>answerInput.value.toLowerCase().includes(a))){
+  okBox.style.display="block";
+  locBox.textContent="Ort: "+stations[station].p;
+  letterStep.style.display="block";
  } else errBox.style.display="block";
 };
 
 letterInput.oninput=e=>{
  if(e.target.value.toUpperCase()===stations[station].l){
-   collected.push(e.target.value.toUpperCase());
-   elionPopup.style.display="flex";
+  collected.push(e.target.value.toUpperCase());
+  elionPopup.style.display="flex";
  }
 };
 
@@ -484,7 +263,6 @@ popupNext.onclick=()=>{
  loadStation(station+1);
 };
 
-/* PUZZLE */
 function startPuzzle(){
  mainCard.style.display="none";
  puzzleOverlay.style.display="flex";
@@ -512,13 +290,10 @@ function startPuzzle(){
 
 function checkSolved(){
  if([...document.querySelectorAll(".slot")].map(s=>s.textContent).join("")==="EISENGEL"){
-   puzzleOverlay.style.display="none";
-   finalOverlay.style.display="flex";
+  puzzleOverlay.style.display="none";
+  finalOverlay.style.display="flex";
  }
 }
 </script>
 </body>
 </html>
-
-
-
