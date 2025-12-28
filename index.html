@@ -21,19 +21,18 @@ body{
   margin:0;
   font-family:"Segoe UI",system-ui,Arial,sans-serif;
   color:var(--dark);
+  min-height:100vh;
+  overflow-x:hidden;
 
-  /* ❄️ Winterlicher Hintergrund */
-  background-image: 
+  /* ❄️ Himmel */
+  background:
     linear-gradient(
-      rgba(255,255,255,0.65),
-      rgba(255,255,255,0.75)
-    ),
-    url("winter-hintergrund.jpg");
-
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+      to bottom,
+      #dfefff 0%,
+      #eef6ff 35%,
+      #f9fcff 60%,
+      #ffffff 100%
+    );
 }
 
 h1,h2{color:var(--blue);text-align:center}
@@ -474,4 +473,5 @@ function checkSolved(){
 </script>
 </body>
 </html>
+
 
