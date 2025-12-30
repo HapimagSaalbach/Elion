@@ -1,329 +1,913 @@
 <!doctype html>
 <html lang="de">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Elion und der verlorene Schneezauber</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Elions Winterrätseltour – Hapimag Saalbach</title>
 
 <style>
 :root{
-  --blue:#2b5f7a;
-  --dark:#1e2f3a;
-  --card:rgba(255,255,255,0.96);
-  --radius:22px;
-  --shadow:0 12px 35px rgba(0,0,0,.25);
+  --wald: #0a1a2a;
+  --wald-hell: #14324a;
+  --moos: #2f86c7;
+  --text: #0b2333;
+  --karte: rgba(255,255,255,0.98);
+  --radius: 22px;
+  --shadow: 0 10px 40px rgba(0,0,0,0.22);
 }
 
-*{box-sizing:border-box;}
+* { box-sizing: border-box; }
 
 body{
   margin:0;
-  font-family:"Segoe UI",system-ui,Arial,sans-serif;
-  color:var(--dark);
+  font-family: system-ui, Arial, sans-serif;
+  color:var(--text);
   min-height:100vh;
-  background:linear-gradient(to bottom,#dfefff 0%,#eef6ff 40%,#ffffff 100%);
+
+  /* Hintergrundbild */
+  background-image:
+    linear-gradient(180deg, rgba(10,26,42,0.35), rgba(10,26,42,0.55)),
+    url("schnee-landschaft-gross-jpg--29102-.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
-/* ❄️ Winterlandschaft */
-.landscape{position:fixed;inset:0;z-index:-1;overflow:hidden;}
-.mountains.back{
-  position:absolute;bottom:0;width:120%;height:45%;
-  background:
-    radial-gradient(circle at 15% 100%, #d6e3f0 40%, transparent 41%),
-    radial-gradient(circle at 45% 100%, #cfdfee 45%, transparent 46%),
-    radial-gradient(circle at 75% 100%, #c8d9e8 42%, transparent 43%);
-}
-.mountains.front{
-  position:absolute;bottom:0;width:120%;height:38%;
-  background:
-    radial-gradient(circle at 20% 100%, #b6cada 50%, transparent 51%),
-    radial-gradient(circle at 50% 100%, #aec4d6 55%, transparent 56%),
-    radial-gradient(circle at 80% 100%, #a6bdd1 52%, transparent 53%);
-}
-.forest{
-  position:absolute;bottom:0;width:120%;height:30%;
-  background:repeating-linear-gradient(-60deg,#1f3d2b 0 12px,#244835 12px 24px);
-  clip-path:polygon(0% 100%,0% 40%,5% 50%,10% 35%,15% 55%,20% 40%,25% 60%,30% 45%,35% 65%,40% 50%,45% 70%,50% 55%,55% 75%,60% 60%,65% 80%,70% 65%,75% 85%,80% 70%,85% 90%,90% 75%,95% 95%,100% 80%,100% 100%);
+.wrap{
+  width:min(980px,100%);
+  margin:auto;
+  padding:18px;
 }
 
-h1,h2{text-align:center;color:var(--blue)}
+.card{
+  background:var(--karte);
+  padding:22px;
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+}
 
-.wrap{width:min(980px,100%);margin:auto;padding:20px}
-.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px}
+/* ------------ HEAD ------------ */
+
+.head{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  gap:12px;
+  align-items:center;
+}
+.zirbel-mini{
+  width:70px;
+}
+.title{
+  margin:0;
+  color:var(--moos);
+  font-size:clamp(1.6rem,2vw,2rem);
+}
+.badge{
+  display:inline-block;
+  margin-top:4px;
+  padding:4px 10px;
+  background:#e9f6ff;
+  color:var(--moos);
+  border-radius:14px;
+  font-size:.85rem;
+  border:1px solid #b9ddf6;
+}
+
+/* ------------ BUTTONS ------------ */
 
 button{
-  background:var(--blue);color:white;
-  border:2px solid var(--blue);
-  border-radius:14px;padding:1rem 1.4rem;
-  font-weight:700;cursor:pointer;
+  cursor:pointer;
+  padding:.9rem 1.4rem;
+  border-radius:14px;
+  border:2px solid var(--moos);
+  font-weight:700;
+  font-size:1rem;
+  transition:0.2s;
+  background:var(--moos);
+  color:white;
 }
-button.secondary{background:white;color:var(--blue)}
-button:disabled{opacity:.4}
+button:hover{ filter:brightness(1.12); }
+button.secondary{
+  background:white;
+  color:var(--moos);
+}
+button:disabled{
+  opacity:0.4;
+  cursor:not-allowed;
+  filter:none;
+}
 
-input{
-  width:100%;padding:1rem;border-radius:14px;
-  border:2px solid #cfe6f5;font-size:1rem;
+/* ------------ LEVEL BUTTONS (optimiert!) ------------ */
+
+.levelBtns{
+  margin-top:20px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
 }
+.levelBtn{
+  width:100%;
+  padding:1.1rem 1.4rem !important;
+  text-align:center;
+  font-size:1.05rem !important;
+  border-radius:18px !important;
+}
+
+/* ------------ INPUTS ------------ */
+
+label{
+  font-weight:600;
+  margin-top:1rem;
+  display:block;
+}
+input{
+  width:100%;
+  padding:.9rem 1rem;
+  margin-top:.3rem;
+  border:2px solid #b9ddf6;
+  border-radius:14px;
+  font-size:1rem;
+}
+
+/* ------------ FEEDBACK ------------ */
+
+.err{
+  display:none;
+  color:#c62828;
+  font-weight:700;
+  margin-top:.7rem;
+}
+.ok{
+  display:none;
+  background:#e9f6ff;
+  border:2px solid #5aa7d9;
+  padding:.9rem 1rem;
+  margin-top:.9rem;
+  border-radius:14px;
+  color:#0b3b57;
+  font-weight:700;
+}
+
+/* ------------ ORTS-BOX ------------ */
+
+.loc{
+  display:none;
+  background:#e9f6ff;
+  border:2px solid #b9ddf6;
+  padding:1rem;
+  margin-top:1rem;
+  border-radius:14px;
+  font-weight:700;
+}
+
+/* ------------ OVERLAYS ------------ */
 
 .fullOverlay{
-  position:fixed;inset:0;background:rgba(0,0,0,.55);
-  display:flex;align-items:center;justify-content:center;
-  z-index:1000;padding:20px;
-}
-.box{
-  background:white;border-radius:var(--radius);
-  box-shadow:var(--shadow);padding:26px;
-  width:min(900px,100%);max-height:95vh;
-  overflow:auto;text-align:center;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.5);
+  backdrop-filter:blur(4px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:1000;
+  padding:20px;
 }
 
-.slot,.letterTile{
-  width:60px;height:60px;border-radius:14px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.7rem;font-weight:800;
+.levelBox, .introBox, .popupBox{
+  width:min(900px,92%);
+  max-height:92vh;
+  background:white;
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  display:flex;
+  flex-direction:column;
 }
-.slot{border:2px dashed #cfe6f5}
-.letterTile{background:var(--blue);color:white;cursor:grab}
+
+.levelInner, .introInner, .popupInner{
+  padding:24px;
+  text-align:center;
+}
+
+.intro-zirbel, .popup-zirbel{
+  max-width:260px;
+  display:block;
+  margin:auto;
+}
+
+/* ------------ POPUP ------------ */
+
+#letterPopup{
+  display:none;
+}
+
+.popupFooter{
+  padding:12px;
+  background:#f0fbff;
+  border-top:1px solid #d4eefb;
+  text-align:center;
+}
+
+/* ------------ PUZZLE ------------ */
+
+#puzzleOverlay{
+  display:none;
+}
+
+.puzzleBox{
+  width:min(900px,92%);
+  background:white;
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:26px;
+  text-align:center;
+}
+
+.puzzleSlots, .puzzleLetters{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  justify-content:center;
+  margin-top:20px;
+}
+
+.slot{
+  width:60px;
+  height:60px;
+  border:2px dashed #b9ddf6;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:1.7rem;
+  font-weight:800;
+  color:var(--moos);
+  background:#f4fbff;
+}
+
+.letterTile{
+  width:60px;
+  height:60px;
+  background:var(--moos);
+  color:white;
+  font-size:1.7rem;
+  font-weight:800;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:grab;
+  user-select:none;
+}
+.letterTile:active{
+  cursor:grabbing;
+  transform:scale(1.08);
+}
+  /* ============================================================
+   MOBILE OPTIMIERUNG (nur < 600px)
+   Desktop bleibt 1:1 unverändert
+============================================================ */
+@media (max-width: 600px){
+
+  /* --- Allgemein --- */
+  body{
+    padding:0;
+  }
+
+  .wrap{
+    padding:10px;
+  }
+
+  /* --- Boxen & Overlays --- */
+  .fullOverlay{
+    padding:10px;
+  }
+
+  .levelBox, .introBox, .popupBox, .puzzleBox{
+    width:95%;
+    max-height:95vh;
+    border-radius:18px;
+  }
+
+  .introInner, .popupInner, .levelInner{
+    padding:16px;
+  }
+
+  /* --- Texte --- */
+  .introInner p,
+  .popupInner p,
+  #riddleText{
+    font-size:1.05rem;
+    line-height:1.45;
+  }
+
+  .title{
+    font-size:1.4rem;
+  }
+
+  /* --- Buttons --- */
+  button{
+    font-size:1.15rem;
+    padding:1rem 1.3rem;
+    border-radius:16px;
+  }
+
+  .levelBtn{
+    font-size:1.2rem !important;
+    padding:1.3rem !important;
+    border-radius:18px !important;
+  }
+
+  /* --- Inputs --- */
+  input{
+    font-size:1.2rem;
+    padding:1.1rem;
+    border-radius:16px;
+  }
+
+  /* --- Bilder --- */
+  .intro-zirbel,
+  .popup-zirbel{
+    max-width:180px;
+  }
+
+  .zirbel-mini{
+    width:55px;
+  }
+
+    /* --- Puzzle --- */
+  .slot,
+  .letterTile{
+    width:72px;
+    height:72px;
+    font-size:2rem;
+    border-radius:16px;
+  }
+
+  .puzzleSlots,
+  .puzzleLetters{
+    gap:10px;
+  }
+
+  /* WICHTIG für Drag & Drop am Handy */
+  .letterTile,
+  .slot{
+    touch-action:none;
+  }
+
+  /* --- MOBILES SCROLL-FIX --- */
+  .levelBox,
+  .introBox,
+  .popupBox {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .fullOverlay {
+    overflow: hidden;
+  }
+}
 </style>
 </head>
 <body>
-
-<div class="landscape">
-  <div class="mountains back"></div>
-  <div class="mountains front"></div>
-  <div class="forest"></div>
-</div>
-
-<!-- LEVEL -->
+<!-- LEVEL AUSWAHL -->
 <div id="levelOverlay" class="fullOverlay">
-  <div class="box">
-    <h2>Wähle deine Rätsel-Stufe</h2>
-    <button data-lvl="1">🟢 6–8 Jahre</button>
-    <button data-lvl="2">🟡 9–11 Jahre</button>
-    <button data-lvl="3">🟠 12–13 Jahre</button>
-    <button data-lvl="4">🔴 14–16 Jahre</button>
+  <div class="levelBox">
+    <div class="levelInner">
+      <h2 class="levelTitle">Wähle deine Rätsel-Stufe</h2>
+      <p>
+        Je älter du bist, desto kniffliger werden die Fragen.<br>
+        Alle gehen aber zu denselben Orten.
+      </p>
+
+      <div class="levelBtns">
+        <button class="levelBtn" data-lvl="1">🟢 Stufe 1 (6–8 Jahre)</button>
+        <button class="levelBtn" data-lvl="2">🟡 Stufe 2 (9–11 Jahre)</button>
+        <button class="levelBtn" data-lvl="3">🟠 Stufe 3 (12–13 Jahre)</button>
+        <button class="levelBtn" data-lvl="4">🔴 Stufe 4 (14–16 Jahre)</button>
+      </div>
+    </div>
+
+    <div class="popupFooter">
+      <small>Hapimag Saalbach – Elions Winterrätsel-Abenteuer</small>
+    </div>
   </div>
 </div>
 
 <!-- INTRO -->
-<div id="introOverlay" class="fullOverlay" style="display:none">
-  <div class="box">
-    <h2>Elion und der verlorene Schneezauber</h2>
-    <p>
-      Wenn der Winter nach Saalbach kommt, wird die Welt leise. Der Schnee legt sich sanft auf die Berge und alles beginnt zu glitzern.
-      In dieser stillen Zeit ist Elion unterwegs.<br><br>
-      
-      Elion ist ein freundliches Schneewesen. Er bringt den Schneezauber in den Ort, lässt Flocken tanzen und schenkt den 
-      Bergen ihr winterliches Leuchten. 
-      Doch eines Tages verirrte sich Elion. Er fand den Weg nicht mehr zurück und sein Zauber blieb an einem geheimen Ort gefangen. 
-      Seitdem wirkt der Winter ein wenig stiller, als würde etwas fehlen. 
-      Die Berge wussten: Nur Kinder können helfen. 
-      Darum versteckten sie ein Winterwort mit acht Buchstaben. 
-      
-      Jeder Buchstabe wartet an einem besonderen Ort und wird von einem kleinen Rätsel beschützt. 
-      Wenn alle Buchstaben gefunden sind, kann Elion befreit werden. 
-      Vielleicht bist du hier, um ihm zu helfen. 
-      Folge den Rätseln, sammle die Buchstaben und bring den Schneezauber zurück nach Saalbach.
-    </p>
+<div id="introOverlay" class="fullOverlay" style="display:none;">
+  <div class="introBox">
+    <div class="introInner">
+      <h2 class="introTitle">Elion und der verlorene Schneezauber</h2>
+      <img src="yeti-9264126_1280.png" class="intro-zirbel">
 
-    <audio id="introAudio" src="ElevenLabs_Text_to_Speech_audio (1).mp3"></audio>
-    <button id="readBtn" class="secondary">▶️ Geschichte vorlesen</button><br><br>
-    <button id="startBtn" disabled>Abenteuer starten ❄️</button>
+      <p class="introText">
+        Wenn der Winter nach Saalbach kommt, wird die Welt leise. Der Schnee legt sich sanft auf die Berge und alles beginnt zu glitzern.
+        In dieser stillen Zeit ist Elion unterwegs.<br><br>
+
+        Elion ist ein freundliches Schneewesen. Er bringt den Schneezauber in den Ort, lässt Flocken tanzen und schenkt den
+        Bergen ihr winterliches Leuchten.
+        Doch eines Tages verirrte sich Elion. Er fand den Weg nicht mehr zurück und sein Zauber blieb an einem geheimen Ort gefangen.
+        Seitdem wirkt der Winter ein wenig stiller, als würde etwas fehlen.
+        Die Berge wussten: Nur Kinder können helfen.
+        Darum versteckten sie ein Winterwort mit acht Buchstaben.
+
+        Jeder Buchstabe wartet an einem besonderen Ort und wird von einem kleinen Rätsel beschützt.
+        Wenn alle Buchstaben gefunden sind, kann Elion befreit werden.
+        Vielleicht bist du hier, um ihm zu helfen.
+        Folge den Rätseln, sammle die Buchstaben und bring den Schneezauber zurück nach Saalbach.
+      </p>
+
+      <button id="readBtn" class="secondary">▶️ Vorlesen</button>
+      <audio id="introAudio" preload="auto" src="ElevenLabs_Text_to_Speech_audio (1).mp3"></audio>
+    </div>
+
+    <div class="popupFooter">
+      <button id="startBtn" disabled>Weiter zum Abenteuer ✨</button>
+    </div>
   </div>
 </div>
 
-<!-- ELIoN POPUP -->
-<div id="elionPopup" class="fullOverlay" style="display:none">
-  <div class="box">
-    <h2>Super gemacht! ❄️</h2>
-    <p>Du hast einen Buchstaben gefunden.<br>
-    Beeil dich, damit wir Elions Magie befreien!</p>
-    <button id="popupNext">Weiter</button>
+<!-- POPUP nach gefundenem Buchstaben -->
+<div id="letterPopup" class="fullOverlay" style="display:none;">
+  <div class="popupBox">
+    <div class="popupInner">
+      <img src="yeti-9264126_1280.png" class="popup-zirbel">
+
+      <h2>Super, Meisterdetektiv! 🔍✨</h2>
+
+      <p id="popupText">Du hast eine geheime Spur gefunden! Weiter so – Elion zählt auf dich!</p>
+    </div>
+
+    <div class="popupFooter">
+      <button id="popupNextBtn">Weiter ➜</button>
+    </div>
   </div>
 </div>
 
+<!-- HAUPT-RÄTSEL -->
 <main class="wrap">
-<section id="mainCard" class="card" style="display:none">
-  <h1>Elions Winter-Rätsel</h1>
-  <p id="badge"></p>
-  <p id="riddleText"></p>
+  <section class="card" id="mainCard" style="display:none;">
 
-  <input id="answerInput" placeholder="Deine Antwort">
-  <button id="checkAnswerBtn">Antwort prüfen</button>
+    <header class="head">
+      <img src="yeti-9264126_1280.png" class="zirbel-mini">
 
-  <p id="errBox" style="display:none;color:red">Noch nicht richtig.</p>
-  <p id="okBox" style="display:none;color:green">Richtig!</p>
+      <div>
+        <h1 class="title">Elions große Winterrätseltour</h1>
+        <p class="sub">Finde alle 8 Buchstaben – am Ende kehrt der Schneezauber zurück!</p>
+        <span class="badge" id="badge"></span>
+      </div>
 
-  <p id="locBox"></p>
+      <img src="yeti-9264126_1280.png" class="zirbel-mini">
+    </header>
 
-  <div id="letterStep" style="display:none">
-    <input id="letterInput" maxlength="1" placeholder="Buchstabe eingeben">
-  </div>
-</section>
+    <h2 id="riddleTitle">Rätsel</h2>
+    <p id="riddleText"></p>
+
+    <label>Deine Antwort</label>
+    <input id="answerInput" autocomplete="off" placeholder="Antwort eingeben…">
+
+    <button id="checkAnswerBtn" style="margin-top:1rem;">Antwort prüfen</button>
+
+    <div class="err" id="errBox">Leider falsch – versuch's nochmal!</div>
+    <div class="ok" id="okBox">Richtig!</div>
+
+    <div id="locBox" class="loc"></div>
+
+    <div id="letterStep" style="display:none;">
+      <label>Buchstabe vom Ort</label>
+      <input id="letterInput" maxlength="1" placeholder="Buchstabe eingeben…">
+    </div>
+
+  </section>
 </main>
 
-<!-- PUZZLE -->
-<div id="puzzleOverlay" class="fullOverlay" style="display:none">
-  <div class="box">
-    <h2>Ordne die Buchstaben</h2>
-    <p>Bringe die Buchstaben in die richtige Reihenfolge.</p>
-    <div id="puzzleSlots" style="display:flex;gap:12px;justify-content:center"></div>
-    <div id="puzzleLetters" style="display:flex;gap:12px;justify-content:center;margin-top:20px"></div>
+<!-- PUZZLE OVERLAY -->
+<div id="puzzleOverlay" class="fullOverlay" style="display:none;">
+  <div class="puzzleBox">
+    <h2>Buchstaben sortieren</h2>
+    <p>Ziehe die Buchstaben in die richtige Reihenfolge.</p>
+
+    <div class="puzzleSlots" id="puzzleSlots"></div>
+    <div class="puzzleLetters" id="puzzleLetters"></div>
   </div>
 </div>
 
 <!-- FINALE -->
-<div id="finalOverlay" class="fullOverlay" style="display:none">
-  <div class="box">
-    <h2>Elion ist befreit! ✨</h2>
-    <p>Sage das Lösungswort an der Rezeption.</p>
-    <button onclick="location.reload()">Nochmal spielen</button>
+<div id="finalOverlay" class="fullOverlay" style="display:none;">
+  <div class="introBox">
+    <div class="introInner" style="text-align:center;">
+      <img src="yeti-9264126_1280.png" class="intro-zirbel">
+
+      <h2 class="introTitle">Du hast es geschafft!</h2>
+
+      <p>
+        Du hast alle Buchstaben richtig sortiert!<br><br>
+        Gehe nun zur Rezeption und sage das Lösungswort.<br>
+        Elion ist stolz auf dich! ❄️✨
+      </p>
+    </div>
+
+    <div class="popupFooter">
+      <button onclick="location.reload()">Nochmal spielen</button>
+    </div>
   </div>
 </div>
 <script>
-let level=1,station=1,collected=[];
+/* ============================================================
+   LEVEL & INTRO
+============================================================ */
+let currentLevel = 1;
+let currentStation = 1;
+let collectedLetters = [];
 
-document.querySelectorAll("#levelOverlay button").forEach(b=>{
-  b.onclick=()=>{
-    level=+b.dataset.lvl;
-    levelOverlay.style.display="none";
-    introOverlay.style.display="flex";
-  };
+/* LEVEL-AUSWAHL */
+document.querySelectorAll(".levelBtn").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    currentLevel = Number(btn.dataset.lvl);
+    document.getElementById("levelOverlay").style.display="none";
+    document.getElementById("introOverlay").style.display="flex";
+  });
 });
 
-readBtn.onclick=()=>{
-  introAudio.currentTime=0;
-  introAudio.play();
-  introAudio.onended=()=>startBtn.disabled=false;
-};
+/* INTRO AUDIO */
+const audio = document.getElementById("introAudio");
+const readBtn = document.getElementById("readBtn");
+const startBtn = document.getElementById("startBtn");
+let isPlaying = false;
 
-startBtn.onclick=()=>{
-  introOverlay.style.display="none";
-  mainCard.style.display="block";
+startBtn.disabled = true;
+
+readBtn.addEventListener("click", async ()=>{
+  if(!isPlaying){
+    audio.currentTime = 0;
+    await audio.play();
+    isPlaying = true;
+    readBtn.textContent = "⏸️ Pause";
+  } else {
+    audio.pause();
+    isPlaying = false;
+    readBtn.textContent = "▶️ Vorlesen";
+  }
+});
+
+audio.addEventListener("ended", ()=>{
+  isPlaying = false;
+  readBtn.textContent = "▶️ Vorlesen";
+  startBtn.disabled = false;
+});
+
+startBtn.addEventListener("click", ()=>{
+  document.getElementById("introOverlay").style.display="none";
+  document.getElementById("mainCard").style.display="block";
   loadStation(1);
+});
+
+/* ============================================================
+   RÄTSEL – ALLE LEVEL (Saalbach + Winter)
+============================================================ */
+const riddles = {
+  1:[
+    {q:"Was fällt im Winter vom Himmel?", a:["schnee"]},
+    {q:"Wie nennt man die Bretter, mit denen man im Winter den Berg hinunterfährt?", a:["ski","schi"]},
+    {q:"Wie heißt das kalte Wasser, das zu Eis wird?", a:["wasser"]},
+    {q:"Wie nennt man einen großen, runden Ball aus Schnee?", a:["schneeball"]},
+    {q:"Welche Farbe hat Schnee meistens?", a:["weiß","weiss"]},
+    {q:"Was trägt man an den Händen, damit sie warm bleiben?", a:["handschuhe"]},
+    {q:"Was macht man aus Schnee mit zwei Armen aus Ästen?", a:["schneemann"]},
+    {q:"In welchem Ort sind wir? (8 Buchstaben)", a:["saalbach"]}
+  ],
+
+  2:[
+    {q:"Wie heißt das Skigebiet, das Saalbach mit Hinterglemm, Leogang und Fieberbrunn verbindet?", a:["skicircus","ski circus"]},
+    {q:"Wie nennt man eine Piste, die für Anfänger leichter ist?", a:["blaue piste","blaue","blau"]},
+    {q:"Was benutzt man, um auf der Piste nach oben zu kommen (ein Fahrgerät am Berg)?", a:["lift","seilbahn"]},
+    {q:"Wie nennt man den festen, glatten Schnee auf Wegen, auf dem man leicht rutscht?", a:["eis"]},
+    {q:"Wie nennt man das Gerät, mit dem man auf einem Brett den Berg hinunterfährt?", a:["snowboard"]},
+    {q:"Was braucht man auf der Piste unbedingt, um sicher zu fahren?", a:["helm"]},
+    {q:"Wie heißt der kalte Wind im Winter oft? (ein Wort)", a:["frost","kälte","kaelte"]},
+    {q:"Wie heißt unser Ort? (8 Buchstaben)", a:["saalbach"]}
+  ],
+
+  3:[
+    {q:"Wie nennt man die Spur, die Ski im Schnee hinterlassen?", a:["spur","spuren"]},
+    {q:"Was bedeutet es, wenn eine Piste ‚gesperrt‘ ist?", a:["geschlossen","zu"]},
+    {q:"Wie nennt man den Teil der Ausrüstung, der den Ski am Schuh festhält?", a:["bindung","bindungen"]},
+    {q:"Wie nennt man Schnee, der sehr weich und locker ist (abseits der Piste)?", a:["pulverschnee","powder"]},
+    {q:"Wie nennt man die Stelle, an der viele Lifte und Pisten zusammenkommen?", a:["talstation","zentrum","knotenpunkt"]},
+    {q:"Warum sollte man im Winter genug trinken, auch wenn es kalt ist?", a:["weil man durst hat","weil man durstig wird","damit man nicht austrocknet","weil man nicht austrocknet"]},
+    {q:"Wie heißt die Schutzbrille fürs Skifahren?", a:["skibrille","brille"]},
+    {q:"Welches 8-Buchstaben-Wort passt zur Rätseltour? (Ort)", a:["saalbach"]}
+  ],
+
+  4:[
+    {q:"Wie nennt man eine Lawine, die durch frischen, lockeren Schnee entsteht?", a:["schneebrettlawine","brettlawine","lawine"]},
+    {q:"Was bedeutet ‚präparierte Piste‘?", a:["gewalzt","präpariert","glatt gemacht","bearbeitet"]},
+    {q:"Warum ist ein Helm im Skigebiet besonders wichtig?", a:["schutz","sicherheit","weil er schützt","damit man sicher ist"]},
+    {q:"Wie nennt man das Warnsignal, das bei Lawinengefahr verwendet wird?", a:["lawinenwarnung","warnung","warnstufe"]},
+    {q:"Wie heißt der Zusammenschluss der Skiberge rund um Saalbach?", a:["skicircus","ski circus"]},
+    {q:"Welche Regel hilft, Unfälle zu vermeiden: langsamer fahren oder immer schneller?", a:["langsamer fahren","langsamer","langsam"]},
+    {q:"Warum soll man bei Nebel und Schneefall vorsichtiger fahren?", a:["weil man schlecht sieht","schlechte sicht","weil die sicht schlecht ist"]},
+    {q:"Wie heißt das 8-Buchstaben-Lösungswort (Ort)?", a:["saalbach"]}
+  ]
 };
 
-/* FRAGEN – Winter & Schnee | altersgerecht */
-const riddles={
-1:[
- {q:"Was fällt im Winter vom Himmel?",a:["schnee","schneeflocken"]},
- {q:"Wie fühlt sich Schnee an?",a:["kalt","eiskalt"]},
- {q:"Welche Figur baut man aus Schnee?",a:["schneemann"]},
- {q:"Welche Farbe hat Schnee?",a:["weiß"]},
- {q:"Was trägt man im Winter auf dem Kopf?",a:["mütze"]},
- {q:"Was hinterlassen Schuhe im Schnee?",a:["spuren","fußabdrücke"]},
- {q:"Was glitzert im Schnee?",a:["eiskristalle"]},
- {q:"Wie nennt man gefrorenes Wasser?",a:["eis"]}
-],
-2:[
- {q:"Warum zieht man im Winter warme Kleidung an?",a:["wärme","schutz"]},
- {q:"Was entsteht, wenn Schnee schmilzt und friert?",a:["eis","glätte"]},
- {q:"Warum sind Berge im Winter weiß?",a:["schneedecke"]},
- {q:"Was hilft gegen kalte Hände?",a:["handschuhe"]},
- {q:"Warum sieht man seinen Atem?",a:["kalte luft","dampf"]},
- {q:"Welche Sportarten macht man im Schnee?",a:["skifahren","rodeln","snowboard"]},
- {q:"Was hört man bei sehr kaltem Schnee?",a:["knirschen"]},
- {q:"Warum ist Winter für Tiere schwer?",a:["wenig nahrung","kälte"]}
-],
-3:[
- {q:"Warum rutscht man auf Eis aus?",a:["geringe reibung","glatt"]},
- {q:"Warum bleibt Schnee im Schatten länger?",a:["weniger sonne"]},
- {q:"Warum hält ein dicker Mantel warm?",a:["isolation","luft"]},
- {q:"Warum knackt Schnee bei Frost?",a:["kristalle"]},
- {q:"Warum ist Winterluft klar?",a:["weniger feuchtigkeit"]},
- {q:"Warum frieren Pfützen schneller?",a:["weniger wasser"]},
- {q:"Warum verlieren Bäume Blätter?",a:["energiesparen"]},
- {q:"Warum hilft Bewegung gegen Kälte?",a:["wärme","durchblutung"]}
-],
-4:[
- {q:"Warum kühlen klare Nächte stärker aus?",a:["wärmeabstrahlung"]},
- {q:"Warum schmilzt Schnee in der Sonne?",a:["energie","strahlung"]},
- {q:"Warum wirkt Streusalz?",a:["gefrierpunkt","senkung"]},
- {q:"Warum isolieren Daunen?",a:["luft","isolation"]},
- {q:"Warum sind Lawinen gefährlich?",a:["instabile schichten"]},
- {q:"Warum braucht der Körper mehr Energie?",a:["wärme","kalorien"]},
- {q:"Warum entstehen Eiszapfen?",a:["schmelzen","gefrieren"]},
- {q:"Warum beeinflusst Winter Natur?",a:["ruhephase","stoffwechsel"]}
-]
-};
-
-const stations=[
- null,
- {p:"Skikeller",l:"E"},
- {p:"Oberstes Stockwerk",l:"I"},
- {p:"Heizkeller",l:"S"},
- {p:"Honesty Shop",l:"E"},
- {p:"Bücherecke",l:"N"},
- {p:"Außeneingang Skikeller",l:"G"},
- {p:"Außentreppe",l:"E"},
- {p:"Rezeption",l:"L"}
+/* ============================================================
+   ORTE + BUCHSTABEN
+============================================================ */
+const stations = [
+  null,
+  {place:"Kinderspielraum", letter:"A"},
+  {place:"Rezeption", letter:"C"},
+  {place:"Skiraum / Skidepot", letter:"H"},
+  {place:"Gang / Infotafel", letter:"A"},
+  {place:"Sauna / Wellnessbereich", letter:"L"},
+  {place:"Eingangsbereich", letter:"B"},
+  {place:"Aufenthaltsbereich / Lounge", letter:"A"},
+  {place:"Vor dem Aktivraum / Programmbereich", letter:"S"}
 ];
 
+/* ============================================================
+   STATION LADEN
+============================================================ */
 function loadStation(n){
- if(n>8){startPuzzle();return;}
- station=n;
- badge.textContent=`Station ${n} / 8`;
- riddleText.textContent=riddles[level][n-1].q;
- answerInput.value="";
- letterInput.value="";
- errBox.style.display=okBox.style.display="none";
- letterStep.style.display="none";
+  currentStation = n;
+
+  if(n > 8){
+    startPuzzle();
+    return;
+  }
+
+  const r = riddles[currentLevel][n-1];
+
+  document.getElementById("badge").textContent = `Station ${n} / 8`;
+  document.getElementById("riddleText").textContent = r.q;
+
+  document.getElementById("answerInput").value="";
+  document.getElementById("letterInput").value="";
+  document.getElementById("errBox").style.display="none";
+  document.getElementById("okBox").style.display="none";
+  document.getElementById("locBox").style.display="none";
+  document.getElementById("letterStep").style.display="none";
 }
 
-checkAnswerBtn.onclick=()=>{
- if(riddles[level][station-1].a.some(a=>answerInput.value.toLowerCase().includes(a))){
-  okBox.style.display="block";
-  locBox.textContent="Ort: "+stations[station].p;
-  letterStep.style.display="block";
- } else errBox.style.display="block";
-};
+/* ============================================================
+   ANTWORT PRÜFEN
+============================================================ */
+document.getElementById("checkAnswerBtn").addEventListener("click", ()=>{
+  const val = normalize(document.getElementById("answerInput").value);
+  const correct = riddles[currentLevel][currentStation-1].a;
 
-letterInput.oninput=e=>{
- if(e.target.value.toUpperCase()===stations[station].l){
-  collected.push(e.target.value.toUpperCase());
-  elionPopup.style.display="flex";
- }
-};
+  const ok = correct.some(c => normalize(c) === val);
 
-popupNext.onclick=()=>{
- elionPopup.style.display="none";
- loadStation(station+1);
-};
+  if(!ok){
+    document.getElementById("errBox").style.display="block";
+    return;
+  }
 
+  document.getElementById("errBox").style.display="none";
+  document.getElementById("okBox").style.display="block";
+
+  const st = stations[currentStation];
+  document.getElementById("locBox").style.display="block";
+  document.getElementById("locBox").innerHTML =
+    `📍 <b>Ort:</b> ${st.place}<br>Suche dort den Buchstaben!`;
+
+  document.getElementById("letterStep").style.display="block";
+});
+
+/* ============================================================
+   BUCHSTABE PRÜFEN
+============================================================ */
+document.getElementById("letterInput").addEventListener("input", ()=>{
+  const val = document.getElementById("letterInput").value.trim().toUpperCase();
+  const needed = stations[currentStation].letter;
+
+  if(val === needed){
+    collectedLetters.push(val);
+    document.getElementById("letterPopup").style.display="flex";
+  }
+});
+
+document.getElementById("popupNextBtn").addEventListener("click", ()=>{
+  document.getElementById("letterPopup").style.display="none";
+  loadStation(currentStation+1);
+});
+
+/* ============================================================
+   NORMALISIERUNG
+============================================================ */
+function normalize(s){
+  return s.toLowerCase().trim()
+    .replace(/ä/g,'ae')
+    .replace(/ö/g,'oe')
+    .replace(/ü/g,'ue')
+    .replace(/ß/g,'ss');
+}
+
+/* ============================================================
+   PUZZLE – DRAG & DROP (mit Reset bei falschem Wort)
+============================================================ */
+
+let draggedTile = null;
+
+/* PUZZLE START */
 function startPuzzle(){
- mainCard.style.display="none";
- puzzleOverlay.style.display="flex";
- puzzleSlots.innerHTML=puzzleLetters.innerHTML="";
- for(let i=0;i<8;i++){
-  const s=document.createElement("div");
-  s.className="slot";
-  s.ondragover=e=>e.preventDefault();
-  s.ondrop=e=>{
-   e.preventDefault();
-   const l=e.dataTransfer.getData("t");
-   if(!s.textContent){s.textContent=l;checkSolved();}
-  };
-  puzzleSlots.appendChild(s);
- }
- collected.sort(()=>Math.random()-.5).forEach(l=>{
-  const t=document.createElement("div");
-  t.className="letterTile";
-  t.textContent=l;
-  t.draggable=true;
-  t.ondragstart=e=>e.dataTransfer.setData("t",l);
-  puzzleLetters.appendChild(t);
- });
+  document.getElementById("mainCard").style.display="none";
+  document.getElementById("puzzleOverlay").style.display="flex";
+
+  const slots = document.getElementById("puzzleSlots");
+  slots.innerHTML = "";
+
+  // Slots erstellen
+  for(let i = 0; i < 8; i++){
+    const box = document.createElement("div");
+    box.className = "slot";
+    box.dataset.index = i;
+
+    box.addEventListener("dragover", allowDrop);
+    box.addEventListener("drop", dropIntoSlot);
+
+    slots.appendChild(box);
+  }
+
+  // Buchstaben mischen
+  const letters = [...collectedLetters];
+  letters.sort(()=> Math.random() - 0.5);
+
+  const pool = document.getElementById("puzzleLetters");
+  pool.innerHTML = "";
+
+  letters.forEach(L => createTile(L, pool));
+
+  pool.addEventListener("dragover", allowDrop);
+  pool.addEventListener("drop", dropIntoPool);
 }
 
+/* TILE ERSTELLEN */
+function createTile(letter, parent){
+  const t = document.createElement("div");
+  t.className = "letterTile";
+  t.textContent = letter;
+  t.dataset.letter = letter;
+  t.draggable = true;
+
+  // Maus
+  t.addEventListener("dragstart", dragStart);
+  t.addEventListener("dragend", dragEnd);
+
+  // Touch
+  t.addEventListener("touchstart", touchStart, { passive:false });
+  t.addEventListener("touchmove", touchMove, { passive:false });
+  t.addEventListener("touchend", touchEnd, { passive:false });
+
+  parent.appendChild(t);
+}
+
+/* DRAG START */
+function dragStart(){
+  draggedTile = this;
+  this.style.opacity = "0.3";
+}
+
+/* ============================
+   TOUCH DRAG & DROP FÜR HANDY
+============================ */
+
+let touchTile = null;
+
+function touchStart(e){
+  e.preventDefault();
+  touchTile = this;
+  this.style.opacity = "0.4";
+}
+
+function touchMove(e){
+  e.preventDefault();
+  if(!touchTile) return;
+
+  const touch = e.touches[0];
+  const elem = document.elementFromPoint(touch.clientX, touch.clientY);
+
+  // Slots hervorheben, wenn darüber
+  document.querySelectorAll(".slot").forEach(s => s.style.outline = "");
+  if(elem && elem.classList.contains("slot")){
+    elem.style.outline = "3px solid #2f86c7";
+  }
+}
+
+function touchEnd(e){
+  if(!touchTile) return;
+
+  touchTile.style.opacity = "1";
+
+  const touch = e.changedTouches[0];
+  const target = document.elementFromPoint(touch.clientX, touch.clientY);
+
+  // Hervorhebung entfernen
+  document.querySelectorAll(".slot").forEach(s => s.style.outline = "");
+
+  draggedTile = touchTile;
+
+  if(target && target.classList.contains("slot")){
+    // Drop in Slot simulieren
+    dropIntoSlot.call(target, e);
+  } else {
+    // Zurück in den Buchstabenpool
+    const pool = document.getElementById("puzzleLetters");
+    dropIntoPool.call(pool, e);
+  }
+
+  touchTile = null;
+}
+
+/* DRAG END */
+function dragEnd(){
+  this.style.opacity = "1";
+  draggedTile = null;
+}
+
+function allowDrop(e){
+  e.preventDefault();
+}
+
+/* DROP INTO SLOT */
+function dropIntoSlot(e){
+  e.preventDefault();
+  if(!draggedTile) return;
+
+  const letter = draggedTile.dataset.letter;
+
+  // Slot war schon besetzt → alten Buchstaben zurück in den Pool
+  if(this.textContent.trim() !== ""){
+    const oldLetter = this.textContent.trim();
+    createTile(oldLetter, document.getElementById("puzzleLetters"));
+  }
+
+  this.textContent = letter;
+  draggedTile.remove();
+
+  checkSolved();
+}
+
+/* DROP BACK INTO POOL */
+function dropIntoPool(e){
+  e.preventDefault();
+  if(!draggedTile) return;
+
+  const pool = document.getElementById("puzzleLetters");
+  const letter = draggedTile.dataset.letter;
+
+  // Slot leeren, falls der Buchstabe dort war
+  document.querySelectorAll(".slot").forEach(slot=>{
+    if(slot.textContent.trim() === letter){
+      slot.textContent = "";
+    }
+  });
+
+  createTile(letter, pool);
+  draggedTile.remove();
+
+  checkSolved();
+}
+
+/* LÖSUNG PRÜFEN */
 function checkSolved(){
- if([...document.querySelectorAll(".slot")].map(s=>s.textContent).join("")==="EISENGEL"){
-  puzzleOverlay.style.display="none";
-  finalOverlay.style.display="flex";
- }
+  const word = [...document.querySelectorAll(".slot")]
+               .map(s => s.textContent.trim())
+               .join("");
+
+  // Nur prüfen, wenn alle 8 Buchstaben gesetzt sind
+  if(word.length !== 8) return;
+
+  if(word === "SAALBACH"){
+    // richtige Lösung → Finale anzeigen
+    setTimeout(()=>{
+      document.getElementById("puzzleOverlay").style.display="none";
+      document.getElementById("finalOverlay").style.display="flex";
+    }, 300);
+  } else {
+    // ❌ falsches Wort → automatisch alles zurücksetzen
+    setTimeout(resetPuzzle, 500);
+  }
+}
+
+/* RESET FUNKTION – ALLE BUCHSTABEN FALLEN NACH UNTEN */
+function resetPuzzle(){
+  const pool = document.getElementById("puzzleLetters");
+  pool.innerHTML = ""; // alten Pool leeren
+
+  const slots = document.querySelectorAll(".slot");
+
+  slots.forEach(slot=>{
+    const letter = slot.textContent.trim();
+    if(letter !== ""){
+      createTile(letter, pool);
+      slot.textContent = "";
+    }
+  });
 }
 </script>
 </body>
 </html>
-
-
-
